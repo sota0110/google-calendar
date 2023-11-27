@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>記念日カレンダー</title>
+</head>
+<body>
+    <h1>記念日カレンダー</h1>
+    {% if isfree %}
+        <form action="{% url 'calapp:index' %}" method="post">
+            {% csrf_token %}
+            <select name="year" id="year">
+                {% for year in years %}
+                    <option value="{{ year }}">{{ year }}年</option>
+                {% endfor %}
+            </select>
+            <select name="month" id="month">
+                {% for month in months %}
+                    <option value="{{ month }}">{{ month }}月</option>
+                {% endfor %}
+            </select>
+            <select name="day" id="day">
+                {% for day in days %}
+                    <option value="{{ day }}">{{ day }}日</option>
+                {% endfor %}
+            </select>
+            <select name="period" id="period">
+                {% for key, value in periods.items %}
+                    <option value="{{ value }}">{{ key }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="apply">カレンダーに適用</button>
+        </form>
+    {% else %}
+        <h2>処理が終わりました。</h2>
+        <form action="{% url 'calapp:index' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="reset">トップページに戻る</button>
+        </form>
+    {% endif %}
+    <form action="{% url 'calapp:index' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" name="delete">全ての記念日を削除</button>
+    </form>
+</body>
+</html>
